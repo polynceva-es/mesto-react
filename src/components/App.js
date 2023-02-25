@@ -12,23 +12,27 @@ function App() {
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
   
   // Обработчики событий: Изменение внутреннего состояния
-  function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(true);
-  }
-
-  function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(true);
-  }
-
-  function handleAddPlaceClick() {
-    setIsPlacePopupOpen(true);
-  }
-
+  function handleEditAvatarClick() {setIsEditAvatarPopupOpen(true);}
+  function handleEditProfileClick() {setIsEditProfilePopupOpen(true);}
+  function handleAddPlaceClick() {setIsPlacePopupOpen(true);}
+  
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
   }
+  function handleCloseEsc(evt) {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    } 
+  }
+
+  React.useEffect(() => {
+    window.addEventListener("keydown" , handleCloseEsc);
+    return () => {
+      window.removeEventListener("keydown", handleCloseEsc);
+    };
+  });
 
   return (
     <div>
@@ -56,9 +60,6 @@ function App() {
                 type="text"
                 name="name"
                 placeholder="Имя"
-                minLength="2"
-                maxLength="40"
-                required
               />
               <span className="popup__error input-name-error"></span>
             </label>
@@ -69,9 +70,6 @@ function App() {
                 type="text"
                 name="about"
                 placeholder="О себе"
-                minLength="2"
-                maxLength="200"
-                required
               />
               <span className="popup__error input-about-error"></span>
             </label>
@@ -94,7 +92,6 @@ function App() {
               type="url"
               name="avatar"
               placeholder="Ссылка на картинку"
-              required
             />
             <span className="popup__error input-urlavatar-error"></span>
           </label>
@@ -117,9 +114,6 @@ function App() {
                 type="text"
                 name="title"
                 placeholder="Название"
-                minLength="2"
-                maxLength="30"
-                required
               />
               <span className="popup__error input-title-error"></span>
             </label>
@@ -130,7 +124,6 @@ function App() {
                 type="url"
                 name="url"
                 placeholder="Ссылка на картинку"
-                required
               />
               <span className="popup__error input-url-error"></span>
             </label>

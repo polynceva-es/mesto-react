@@ -12,9 +12,9 @@ function ImagePopup(props) {
           type="button"
           aria-label="Закрыть"
           onClick={props.onClose}
-        ></button>
+        />
         <figure className="popup__figure">
-          <img className="popup__image" src={(props.card && props.card.link)}/>
+          <img className="popup__image" src={(props.card && props.card.link)} alt="Фото места"/>
           <figcaption className="popup__figcaption">{(props.card && props.card.name)}</figcaption>
         </figure>
       </div>

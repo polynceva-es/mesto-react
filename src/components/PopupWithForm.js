@@ -18,8 +18,6 @@ function PopupWithForm(props) {
           className="popup__form popup__form_edit"
           name={props.name}
           action="#"
-          method="get"
-          noValidate
         >
           {props.children}
           <button

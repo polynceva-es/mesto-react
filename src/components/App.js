@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -24,24 +24,27 @@ function App() {
     setIsPlacePopupOpen(false);
     setSelectedCard(undefined);
   }
-  function handleCloseEsc(evt) {
-    if (evt.key === 'Escape') {
-      closeAllPopups();
-    } 
-  }
-  
+
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
+  React.useEffect(()=> {
+    function handleCloseEsc(evt) {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      } 
+    }
+    if(isOpen) {
+      document.addEventListener("keydown" , handleCloseEsc);
+      return () => {
+        document.removeEventListener("keydown", handleCloseEsc);
+      };
+    }
+  }, [isOpen])
+
   function handleCloseClickOverlay(evt) {
     if ((evt.target === evt.currentTarget)) {
       closeAllPopups();
     }
   }
-  React.useEffect(() => {
-    window.addEventListener("keydown" , handleCloseEsc);
-    return () => {
-      window.removeEventListener("keydown", handleCloseEsc);
-    };
-  });
-
   return (
     <div>
       <Header />

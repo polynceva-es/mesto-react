@@ -10,23 +10,31 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(undefined);
   
   // Обработчики событий: Изменение внутреннего состояния
   function handleEditAvatarClick() {setIsEditAvatarPopupOpen(true);}
   function handleEditProfileClick() {setIsEditProfilePopupOpen(true);}
   function handleAddPlaceClick() {setIsPlacePopupOpen(true);}
+  function handleCardClick(card) {setSelectedCard(card);}
   
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
+    setSelectedCard(undefined);
   }
   function handleCloseEsc(evt) {
     if (evt.key === 'Escape') {
       closeAllPopups();
     } 
   }
-
+  
+  function handleCloseClickOverlay(evt) {
+    if ((evt.target === evt.currentTarget)) {
+      closeAllPopups();
+    }
+  }
   React.useEffect(() => {
     window.addEventListener("keydown" , handleCloseEsc);
     return () => {
@@ -41,6 +49,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onEditAvatar={handleEditAvatarClick}
         onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
       />
       <Footer />
 
@@ -51,6 +60,7 @@ function App() {
         labelSubmit="Сохранить"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        handleCloseClickOverlay={handleCloseClickOverlay}
         children={
           <>
             <label className="popup__label">
@@ -84,6 +94,7 @@ function App() {
         labelSubmit="Сохранить"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        handleCloseClickOverlay={handleCloseClickOverlay}
         children={
           <label className="popup__label">
             <input
@@ -105,6 +116,7 @@ function App() {
         labelSubmit="Создать"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
+        handleCloseClickOverlay={handleCloseClickOverlay}
         children={
           <>
             <label className="popup__label">
@@ -140,7 +152,10 @@ function App() {
       />
 
       {/* Попап с картинкой */}
-      <ImagePopup />
+      <ImagePopup 
+        card={selectedCard} 
+        onClose={closeAllPopups}
+        handleCloseClickOverlay={handleCloseClickOverlay} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../utils/api.js"
+import Card from "./Card.js";
 
 function Main(props) {
   const [userName, setUserName] = React.useState();
@@ -14,10 +15,8 @@ function Main(props) {
       setUserName(userInfo.name); 
       setUserDescription(userInfo.about); 
       setUserAvatar(userInfo.avatar);
-      // setCards(initialCards);
-      console.log(initialCards)
+      setCards(initialCards);
     })
-    
   }, [])
 
   return (
@@ -52,7 +51,12 @@ function Main(props) {
         ></button>
       </section>
 
-      <section className="elements"></section>
+      <section className="elements">
+        {cards.map((card) => (
+          <Card card={card} key={card._id} onCardClick={props.onCardClick}/>
+        ))
+       }
+      </section>
     </main>
   );
 }

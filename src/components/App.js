@@ -73,8 +73,11 @@ function App() {
                 type="text"
                 name="name"
                 placeholder="Имя"
+                minLength="2"
+                maxLength="40"
+                required
               />
-              <span className="popup__error input-name-error"></span>
+              <span className="popup__error input-name-error"/>
             </label>
             <label className="popup__label">
               <input
@@ -83,8 +86,11 @@ function App() {
                 type="text"
                 name="about"
                 placeholder="О себе"
+                minLength="2"
+                maxLength="200"
+                required
               />
-              <span className="popup__error input-about-error"></span>
+              <span className="popup__error input-about-error"/>
             </label>
           </>
         }
@@ -106,8 +112,9 @@ function App() {
               type="url"
               name="avatar"
               placeholder="Ссылка на картинку"
+              required
             />
-            <span className="popup__error input-urlavatar-error"></span>
+            <span className="popup__error input-urlavatar-error"/>
           </label>
         }
       />
@@ -129,8 +136,11 @@ function App() {
                 type="text"
                 name="title"
                 placeholder="Название"
+                minLength="2"
+                maxLength="30"
+                required
               />
-              <span className="popup__error input-title-error"></span>
+              <span className="popup__error input-title-error"/>
             </label>
             <label className="popup__label">
               <input
@@ -139,8 +149,9 @@ function App() {
                 type="url"
                 name="url"
                 placeholder="Ссылка на картинку"
+                required
               />
-              <span className="popup__error input-url-error"></span>
+              <span className="popup__error input-url-error"/>
             </label>
           </>
         }

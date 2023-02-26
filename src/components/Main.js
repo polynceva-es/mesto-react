@@ -39,7 +39,7 @@ function Main(props) {
                 className="button button_type_edit"
                 type="button"
                 aria-label="Редактировать профиль"
-              ></button>
+              />
             </div>
             <p className="profile__subtitle">{userDescription}</p>
           </div>
@@ -49,7 +49,7 @@ function Main(props) {
           className="button button_type_add"
           type="button"
           aria-label="Добавить карточку"
-        ></button>
+        />
       </section>
 
       <section className="elements">

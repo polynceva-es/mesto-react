@@ -4,8 +4,18 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import api from '../utils/api.js';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
+  //переменная состояния
+  const [currentUser, setCurrentUser] = React.useState('');
+  React.useEffect(()=> {
+    api.getUserInfo()
+      .then(res => {setCurrentUser(res)})
+      .catch(err => {console.log('Ошибка:' + err)})
+  }, [])
+
   //Хуки, управляющие внутренним состоянием
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -46,7 +56,7 @@ function App() {
     }
   }
   return (
-    <div>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
         onEditProfile={handleEditProfileClick}
@@ -170,7 +180,8 @@ function App() {
         card={selectedCard} 
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay} />
-    </div>
+    </CurrentUserContext.Provider>
+  
   );
 }
 

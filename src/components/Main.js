@@ -1,23 +1,16 @@
 import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import api from "../utils/api.js"
 import Card from "./Card.js";
 
 function Main(props) {
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
+  const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(()=> {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-    .then(res => {
-      const [userInfo, initialCards] = res;
-      setUserName(userInfo.name); 
-      setUserDescription(userInfo.about); 
-      setUserAvatar(userInfo.avatar);
-      setCards(initialCards);
-    })
-    .catch(err => {console.log('Ошибка:' + err)});
+    api.getInitialCards()
+      .then(res => setCards(res))
+      .catch(err => {console.log('Ошибка:' + err)})
   }, [])
 
   return (
@@ -29,11 +22,11 @@ function Main(props) {
             className="profile__img-link"
             href="#"
           >
-            <img className="profile__img" src={userAvatar} alt="Фото профиля" />
+            <img className="profile__img" src={currentUser.avatar} alt="Фото профиля" />
           </a>
           <div className="profile__info">
             <div className="profile__info-conteiner">
-              <h1 className="profile__title">{userName}</h1>
+              <h1 className="profile__title">{currentUser.name}</h1>
               <button
                 onClick={props.onEditProfile}
                 className="button button_type_edit"
@@ -41,7 +34,7 @@ function Main(props) {
                 aria-label="Редактировать профиль"
               />
             </div>
-            <p className="profile__subtitle">{userDescription}</p>
+            <p className="profile__subtitle">{currentUser.about}</p>
           </div>
         </div>
         <button

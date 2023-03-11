@@ -8,11 +8,18 @@ import api from '../utils/api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  //переменная состояния
+  //переменная состояния текущего пользователя
   const [currentUser, setCurrentUser] = React.useState('');
   React.useEffect(()=> {
     api.getUserInfo()
       .then(res => {setCurrentUser(res)})
+      .catch(err => {console.log('Ошибка:' + err)})
+  }, [])
+  //переменная состояния карточек
+  const [cards, setCards] = React.useState([]);
+  React.useEffect(()=> {
+    api.getInitialCards()
+      .then(res => setCards(res))
       .catch(err => {console.log('Ошибка:' + err)})
   }, [])
 
@@ -33,6 +40,19 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
     setSelectedCard(undefined);
+  }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i=> i._id === currentUser._id);
+    const promise = isLiked ? api.deleteLikeCard(card._id) : api.setLikeCard(card._id);
+    promise.then((newCard) => setCards((cards)=> cards.map((card)=> card._id === newCard._id ? newCard : card )))
+    .catch(err => {console.log('Ошибка:' + err)})
+  }
+
+  function handleCardDelete(card){
+    api.setDeleteCard(card._id)
+    .then(() => setCards((cards) => cards.filter(i => i._id !== card._id)))
+    .catch(err => {console.log('Ошибка:' + err)})
   }
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
@@ -59,10 +79,13 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
+        cards = {cards}
         onEditProfile={handleEditProfileClick}
         onEditAvatar={handleEditAvatarClick}
         onAddPlace={handleAddPlaceClick}
         onCardClick={handleCardClick}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
       />
       <Footer />
 

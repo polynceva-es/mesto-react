@@ -10,15 +10,32 @@ function Card (props) {
     function handleClick() {
         props.onCardClick(props.card);
     }
+    function handleDeleteClick() {
+        props.onCardDelete(props.card);
+    }
+
+    function handleLikeClick() {
+        props.onCardLike(props.card);
+    }
 
     return(
     <article className="card">
-        {isOwn && <button className="button button_type_delete" type="button" aria-label="Удалить карточку"/>}
+        {isOwn && <button 
+                    className="button button_type_delete" 
+                    type="button" 
+                    aria-label="Удалить карточку"
+                    onClick={handleDeleteClick}
+                  />}
         <img className="card__image" src={props.card.link} onClick={handleClick} alt="Фото места"/>
         <div className="card__item">
             <h2 className="card__caption">{props.card.name}</h2>
             <div className="card__like">
-                <button className={CardLikeButtonClassName} type="button" aria-label="Поставить лайк"/>
+                <button 
+                    className={CardLikeButtonClassName} 
+                    type="button" 
+                    aria-label="Поставить лайк"
+                    onClick={handleLikeClick}
+                />
                 <p className="card__like_num">{props.card.likes.length}</p>
             </div>
         </div>

@@ -91,6 +91,12 @@ function App() {
       .catch(err => {console.log('Ошибка:' + err)})
   }
 
+  function handleAddPlaceSubmit(formValues) {
+    api.setNewCard(formValues)
+      .then(res => {setCards([res, ...cards]); closeAllPopups()})
+      .catch(err => {console.log('Ошибка:' + err)})
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -120,6 +126,7 @@ function App() {
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay}
+        onAddPlace={handleAddPlaceSubmit}
       />
       <ImagePopup 
         card={selectedCard} 

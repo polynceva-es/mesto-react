@@ -20,7 +20,7 @@ function AddPlacePopup(props) {
       setTitle('');
       setUrl('');
     }
-  })
+  }, [props.isOpen])
   return (
     <PopupWithForm
       name="addcard"

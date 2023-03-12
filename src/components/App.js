@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -11,28 +11,23 @@ import api from '../utils/api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
-  //переменная состояния текущего пользователя
-  const [currentUser, setCurrentUser] = React.useState('');
-  React.useEffect(()=> {
-    api.getUserInfo()
-      .then(res => {setCurrentUser(res)})
-      .catch(err => {console.log('Ошибка:' + err)})
-  }, [])
-  //переменная состояния карточек
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  React.useEffect(()=> {
-    api.getInitialCards()
-      .then(res => setCards(res))
-      .catch(err => {console.log('Ошибка:' + err)})
-  }, [])
-
-  //Хуки, управляющие внутренним состоянием
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(undefined);
+  const [selectedCard, setSelectedCard] = React.useState(null);
   
-  // Обработчики событий: Изменение внутреннего состояния
+  React.useEffect(()=> {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(res => { 
+        const [userInfo, initialCards] = res;
+        setCurrentUser(userInfo);
+        setCards(initialCards);
+      })
+      .catch(err => {console.log('Ошибка:' + err)})
+  }, [])
+  
   function handleEditAvatarClick() {setIsEditAvatarPopupOpen(true);}
   function handleEditProfileClick() {setIsEditProfilePopupOpen(true);}
   function handleAddPlaceClick() {setIsPlacePopupOpen(true);}
@@ -47,8 +42,16 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i=> i._id === currentUser._id);
-    const promise = isLiked ? api.deleteLikeCard(card._id) : api.setLikeCard(card._id);
-    promise.then((newCard) => setCards((cards)=> cards.map((card)=> card._id === newCard._id ? newCard : card )))
+    const promise = isLiked 
+      ? api.deleteLikeCard(card._id) 
+      : api.setLikeCard(card._id);
+    promise
+      .then((newCard) => 
+        setCards((cards)=> 
+          cards.map((card)=> 
+            card._id === newCard._id 
+              ? newCard 
+              : card )))
     .catch(err => {console.log('Ошибка:' + err)})
   }
 

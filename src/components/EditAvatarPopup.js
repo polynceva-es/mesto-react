@@ -11,7 +11,7 @@ function EditAvatarPopup(props) {
     if (props.isOpen) {
       avatar.current.value = '';
     }
-  })  
+  }, [props.isOpen])  
   return (
     <PopupWithForm
       name="editavatar"

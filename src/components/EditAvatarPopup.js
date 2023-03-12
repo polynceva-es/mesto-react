@@ -2,6 +2,11 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 {/* Редактировать аватар */}
 function EditAvatarPopup(props) {
+  const avatar = React.useRef();
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    props.onUpdateAvatar({avatar: avatar.current.value})
+  }  
   return (
     <PopupWithForm
       name="editavatar"
@@ -10,6 +15,7 @@ function EditAvatarPopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       handleCloseClickOverlay={props.handleCloseClickOverlay}
+      onSubmit = {handleSubmit}
       children={
         <label className="popup__label">
           <input
@@ -17,6 +23,7 @@ function EditAvatarPopup(props) {
             className="popup__input"
             type="url"
             name="avatar"
+            ref={avatar}
             placeholder="Ссылка на картинку"
             required
           />

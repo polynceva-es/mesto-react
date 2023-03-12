@@ -85,6 +85,12 @@ function App() {
       .catch(err => {console.log('Ошибка:' + err)})
   }
 
+  function handleUpdateAvatar(formValue) {
+    api.setUserAvatar(formValue)
+      .then(res => {setCurrentUser(res); closeAllPopups()})
+      .catch(err => {console.log('Ошибка:' + err)})
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -108,6 +114,7 @@ function App() {
         isOpen={isEditAvatarPopupOpen}      
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay}
+        onUpdateAvatar={handleUpdateAvatar}
       />
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}

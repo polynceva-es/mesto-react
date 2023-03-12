@@ -17,6 +17,7 @@ function PopupWithForm(props) {
         <form
           className="popup__form popup__form_edit"
           name={props.name}
+          onSubmit={props.onSubmit}
           action="#"
         >
           {props.children}

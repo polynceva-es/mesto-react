@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
+import PopupWithForm from "./PopupWithForm";
 import api from '../utils/api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -75,6 +78,13 @@ function App() {
       closeAllPopups();
     }
   }
+
+  function handleUpdateUser(formValues) {
+    api.setUserInfo(formValues)
+      .then(res => {setCurrentUser(res); closeAllPopups()})
+      .catch(err => {console.log('Ошибка:' + err)})
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -88,108 +98,27 @@ function App() {
         onCardDelete={handleCardDelete}
       />
       <Footer />
-
-      {/* Редактировать профиль */}
-      <PopupWithForm
-        name="editprofile"
-        title="Редактировать профиль"
-        labelSubmit="Сохранить"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay}
-        children={
-          <>
-            <label className="popup__label">
-              <input
-                id="input-name"
-                className="popup__input"
-                type="text"
-                name="name"
-                placeholder="Имя"
-                minLength="2"
-                maxLength="40"
-                required
-              />
-              <span className="popup__error input-name-error"/>
-            </label>
-            <label className="popup__label">
-              <input
-                id="input-about"
-                className="popup__input"
-                type="text"
-                name="about"
-                placeholder="О себе"
-                minLength="2"
-                maxLength="200"
-                required
-              />
-              <span className="popup__error input-about-error"/>
-            </label>
-          </>
-        }
+        onUpdateUser={handleUpdateUser}
       />
-
-      {/* Редактировать аватар */}
-      <PopupWithForm
-        name="editavatar"
-        title="Обновить аватар"
-        labelSubmit="Сохранить"
-        isOpen={isEditAvatarPopupOpen}
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}      
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay}
-        children={
-          <label className="popup__label">
-            <input
-              id="input-urlavatar"
-              className="popup__input"
-              type="url"
-              name="avatar"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="popup__error input-urlavatar-error"/>
-          </label>
-        }
       />
-
-      {/* Добавить карточку */}
-      <PopupWithForm
-        name="addcard"
-        title="Новое место"
-        labelSubmit="Создать"
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         handleCloseClickOverlay={handleCloseClickOverlay}
-        children={
-          <>
-            <label className="popup__label">
-              <input
-                id="input-title"
-                className="popup__input"
-                type="text"
-                name="title"
-                placeholder="Название"
-                minLength="2"
-                maxLength="30"
-                required
-              />
-              <span className="popup__error input-title-error"/>
-            </label>
-            <label className="popup__label">
-              <input
-                id="input-url"
-                className="popup__input"
-                type="url"
-                name="url"
-                placeholder="Ссылка на картинку"
-                required
-              />
-              <span className="popup__error input-url-error"/>
-            </label>
-          </>
-        }
       />
-
+      <ImagePopup 
+        card={selectedCard} 
+        onClose={closeAllPopups}
+        handleCloseClickOverlay={handleCloseClickOverlay}
+      />
       {/* Вы уверены? */}
       <PopupWithForm
         name="delete-card"
@@ -197,14 +126,7 @@ function App() {
         labelSubmit="Да"
         children={<></>}
       />
-
-      {/* Попап с картинкой */}
-      <ImagePopup 
-        card={selectedCard} 
-        onClose={closeAllPopups}
-        handleCloseClickOverlay={handleCloseClickOverlay} />
     </CurrentUserContext.Provider>
-  
   );
 }
 

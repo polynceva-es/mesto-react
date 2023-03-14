@@ -9,6 +9,7 @@ import ImagePopup from "./ImagePopup";
 import DeletePopup from "./DeletePopup";
 import api from '../utils/api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Loader from "./Loader";
 
 
 function App() {
@@ -19,9 +20,11 @@ function App() {
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
   const [cardToDelete, setCardToDelete]= React.useState(null);
   const [selectedCard, setSelectedCard] = React.useState(null);
+  const [isLoader, setIsLoader] = React.useState(false);
   
   
   React.useEffect(()=> {
+    setIsLoader(true);
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(res => { 
         const [userInfo, initialCards] = res;
@@ -29,6 +32,7 @@ function App() {
         setCards(initialCards);
       })
       .catch(err => {console.log('Ошибка:' + err)})
+      .finally(() => setIsLoader(false))
   }, [])
   
   function handleEditAvatarClick() {setIsEditAvatarPopupOpen(true);}
@@ -61,10 +65,12 @@ function App() {
   }
 
   function handleCardDelete(card){
+    setIsLoader(true);
     api.setDeleteCard(card._id)
     .then(() => setCards((cards) => cards.filter(i => i._id !== card._id)))
     .then(() => closeAllPopups())
     .catch(err => {console.log('Ошибка:' + err)})
+    .finally(() => setIsLoader(false))
   }
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard || cardToDelete
@@ -89,21 +95,27 @@ function App() {
   }
 
   function handleUpdateUser(formValues) {
+    setIsLoader(true);
     api.setUserInfo(formValues)
       .then(res => {setCurrentUser(res); closeAllPopups()})
       .catch(err => {console.log('Ошибка:' + err)})
+      .finally(() => setIsLoader(false))
   }
 
   function handleUpdateAvatar(formValue) {
+    setIsLoader(true);
     api.setUserAvatar(formValue)
       .then(res => {setCurrentUser(res); closeAllPopups()})
       .catch(err => {console.log('Ошибка:' + err)})
+      .finally(() => setIsLoader(false))
   }
 
   function handleAddPlaceSubmit(formValues) {
+    setIsLoader(true);
     api.setNewCard(formValues)
       .then(res => {setCards([res, ...cards]); closeAllPopups()})
       .catch(err => {console.log('Ошибка:' + err)})
+      .finally(() => setIsLoader(false))
   }
 
   return (
@@ -147,7 +159,12 @@ function App() {
         card={cardToDelete}
         onClose={closeAllPopups}
         onSubmit={handleCardDelete}
-        handleCloseClickOverlay={handleCloseClickOverlay}/>
+        handleCloseClickOverlay={handleCloseClickOverlay}
+      />
+
+      <Loader
+        isLoader={isLoader}
+      />
     </CurrentUserContext.Provider>
   );
 }

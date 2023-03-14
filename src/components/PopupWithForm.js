@@ -1,6 +1,8 @@
 import React from "react";
 
 function PopupWithForm(props) {
+
+  const submitButtonClassName = (`button button_type_submit ${!props.isFormValid && 'button_type_submit-error'}`)
   
   return (
     <div 
@@ -19,14 +21,15 @@ function PopupWithForm(props) {
           name={props.name}
           onSubmit={props.onSubmit}
           action="#"
+          noValidate
         >
           {props.children}
           <button
-            className="button button_type_submit"
+            className={submitButtonClassName}
             type="submit"
-            name="saveProfileInfo"
             aria-label={props.labelSubmit}
-          >
+            disabled={!props.isFormValid}
+            >
             {props.labelSubmit}
           </button>
         </form>

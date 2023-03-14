@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -10,6 +10,7 @@ import PopupWithForm from "./PopupWithForm";
 import api from '../utils/api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
+
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -17,6 +18,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
+  
   
   React.useEffect(()=> {
     Promise.all([api.getUserInfo(), api.getInitialCards()])

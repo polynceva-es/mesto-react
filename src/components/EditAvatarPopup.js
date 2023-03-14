@@ -1,17 +1,23 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
+import useValidation from "./useValidation";
+
 {/* Редактировать аватар */}
 function EditAvatarPopup(props) {
   const avatar = React.useRef();
+  const {values, errors, onChange, resetValidation, isFormValid} = useValidation();
   function handleSubmit(evt) {
     evt.preventDefault();
-    props.onUpdateAvatar({avatar: avatar.current.value})
+    props.onUpdateAvatar({avatar: avatar.current.value});
+    resetValidation();
   }
   React.useEffect(() => {
     if (props.isOpen) {
       avatar.current.value = '';
-    }
-  }, [props.isOpen])  
+    };
+    resetValidation({avatar: ''});
+  }, [props.isOpen])
+
   return (
     <PopupWithForm
       name="editavatar"
@@ -21,6 +27,7 @@ function EditAvatarPopup(props) {
       onClose={props.onClose}
       handleCloseClickOverlay={props.handleCloseClickOverlay}
       onSubmit = {handleSubmit}
+      isFormValid={isFormValid}
       children={
         <label className="popup__label">
           <input
@@ -29,10 +36,11 @@ function EditAvatarPopup(props) {
             type="url"
             name="avatar"
             ref={avatar}
+            onChange={onChange}
             placeholder="Ссылка на картинку"
             required
           />
-          <span className="popup__error input-urlavatar-error" />
+          <span className="popup__error input-urlavatar-error">{errors.avatar || ''}</span>
         </label>
       }
     />

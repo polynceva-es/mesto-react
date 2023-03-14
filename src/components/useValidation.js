@@ -60,7 +60,8 @@ function useValidation() {
     errors,
     onChange,
     resetValidation,
-    isFormValid
+    isFormValid,
+    setIsFormValid
   };
 }
 

@@ -8,7 +8,7 @@ function EditProfilePopup(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const {values, errors, onChange, resetValidation, isFormValid} = useValidation();
   React.useEffect(() => {
-    resetValidation({name: currentUser.name, about: currentUser.about}, {});
+    resetValidation({name: currentUser.name, about: currentUser.about}, {name: '', about: ''});
   }, [currentUser, props.isOpen])
 
   // Первый вариант

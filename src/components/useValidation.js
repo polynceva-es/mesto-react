@@ -38,10 +38,6 @@ function useValidation() {
   //   }
   //   return res;
   // }
-  React.useEffect(() => {
-    
-    
-  }, [errors])
 
   function onChange(evt) {
     const errorMessage = evt.target.validationMessage;

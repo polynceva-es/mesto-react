@@ -1,10 +1,11 @@
 import React from "react";
 
 function Loader(props) {
-  const loaderClassName = (`loader__overlay ${props.isLoader && 'loader__overlay_active'}`)  
+  const loaderOverlayClassName = (`loader__overlay ${props.isLoader && 'loader__overlay_active'}`)
+  const loaderClassName = (`loader ${props.isLoader && 'rotation'}`)  
   return (
-    <div className= {loaderClassName}>
-        <div className="loader rotation"></div>
+    <div className= {loaderOverlayClassName}>
+        <div className={loaderClassName}></div>
     </div>
   )
 }

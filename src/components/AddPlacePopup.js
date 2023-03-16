@@ -1,7 +1,7 @@
 import React from "react";
 import Popup from "./Popup";
 import Form from "./Form";
-import useValidation from "./useValidation";
+import useValidation from "../hooks/useValidation";
 
 {
   /* Добавить карточку */

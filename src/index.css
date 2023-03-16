@@ -58,3 +58,7 @@
 @import url(./blocks/loader/loader__overlay/loader__overlay.css);
 @import url(./blocks/loader/loader__overlay/_active/loader__overlay_active.css);
 @import url(./blocks/loader/loader.css);
+
+@import url(./blocks/autorisation/autorisation.css);
+@import url(./blocks/autorisation/__text/autorisation__text.css);
+@import url(./blocks/autorisation/__image/autorisation__image.css);

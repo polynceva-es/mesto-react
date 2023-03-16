@@ -2,7 +2,7 @@ import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Popup from "./Popup";
 import Form from "./Form";
-import useValidation from "./useValidation";
+import useValidation from "../hooks/useValidation";
 
 {
   /* Редактировать профиль */
